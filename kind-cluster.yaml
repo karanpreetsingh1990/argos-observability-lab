@@ -1,0 +1,27 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: raspi-cluster
+nodes:
+  - role: control-plane
+    extraMounts:
+      - hostPath: /home/pi/kube-kind/control-plane
+        containerPath: /apps
+    extraPortMappings:
+      - containerPort: 31900
+        hostPort: 31900
+  - role: worker
+    extraMounts:
+      - hostPath: /home/pi/kube-kind/worker
+        containerPath: /apps
+    extraPortMappings:
+      - containerPort: 31900
+        hostPort: 31901
+
+  - role: worker
+    extraMounts:
+      - hostPath: /home/pi/kube-kind/worker
+        containerPath: /apps
+    extraPortMappings:
+      - containerPort: 31900
+        hostPort: 31902
+
