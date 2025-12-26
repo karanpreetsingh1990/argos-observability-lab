@@ -1,0 +1,40 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: blackbox-exporter
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: blackbox-exporter
+  labels:
+    app: blackbox
+  namespace: blackbox-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blackbox
+  template:
+    metadata:
+      labels:
+        app: blackbox 
+    spec:
+      containers:
+        - name: raspi-blackbox
+          image: quay.io/prometheus/blackbox-exporter:latest
+          args: 
+            - --config.file=/config/blackbox.yml
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: config
+              mountPath: /config/
+      volumes:
+        - name: config
+          hostPath:
+            path: /apps/blackbox-exporter/
+
+
+

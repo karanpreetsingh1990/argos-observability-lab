@@ -1,7 +1,13 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: prometheus
+---
 kind: Service
 apiVersion: v1
 metadata:
   name: prom-service
+  namespace: prometheus
 spec:
   type: NodePort
   selector:
@@ -11,3 +17,19 @@ spec:
       port: 9090
       targetPort: 9090
       nodePort: 31900
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: prom-internal-service
+  namespace: prometheus
+spec:
+  type: ClusterIP
+  selector:
+    app: prometheus
+  ports:
+    - protocol: TCP
+      port: 9090
+      targetPort: 9090
+
+
