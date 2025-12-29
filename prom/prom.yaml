@@ -23,7 +23,7 @@ spec:
       containers:
         - name: prom-raspi
           image: prom/prometheus
-          args: ["--config.file=/etc/prometheus/prometheus.yml","--storage.tsdb.path=/etc/prometheus/tsdb","--web.enable-lifecycle"] 
+          args: ["--config.file=/etc/prometheus/prometheus.yml","--storage.tsdb.path=/etc/prometheus/tsdb","--web.enable-lifecycle","--web.route-prefix=/prometheus","--web.external-url=http://raspberrypi.local:30000/prometheus"] 
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: config

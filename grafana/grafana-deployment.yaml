@@ -24,3 +24,15 @@ spec:
         - name: grafana-container
           image: grafana/grafana
           imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: storage
+              mountPath: /var/lib/grafana
+          env:
+          - name: GF_SERVER_ROOT_URL
+            value: "http://raspberrypi.local:30000/grafana"
+          - name: GF_SERVER_SERVE_FROM_SUB_PATH
+            value: "true"
+      volumes:
+        - name: storage
+          hostPath: 
+            path: /apps/grafana/data

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  log.override: |
+    log
+  custom.server: |
+    example.io:8053 {
+      forward . 150.107.8.23
+    }

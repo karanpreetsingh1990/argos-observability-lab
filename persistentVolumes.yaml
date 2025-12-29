@@ -1,0 +1,10 @@
+apiVersion: v1
+kind:
+metadata:
+  name:
+  labels:
+  namespace:
+spec:
+  
+
+

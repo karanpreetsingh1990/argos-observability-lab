@@ -3,8 +3,6 @@ apiVersion: networking.k8s.io/v1
 metadata:
   name: grafana-ingress
   namespace: grafana
-  annotations:
-    haproxy.org/path-rewrite: /grafana/?(.*) /\1  
 spec:
   ingressClassName: haproxy
   rules:

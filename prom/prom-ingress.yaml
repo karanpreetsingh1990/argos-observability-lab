@@ -3,17 +3,17 @@ kind: Ingress
 metadata:
   name: prometheus-ingress
   namespace: prometheus
-  annotations:
-    haproxy.org/path-rewrite: /prometheus/?(.*) /\1
-    haproxy.org/response-header-rewrite: |
-      Location ^/$ /prometheus/
-      Location ^/(.+) /prometheus/\1 
+    #annotations:
+    #haproxy.org/path-rewrite: /prometheus/(.*) /\1
+      #    haproxy.org/response-header-rewrite: |
+      #Location ^/$ /prometheus/
+      #Location ^/(.+) /prometheus/\1 
 spec:
   ingressClassName: haproxy
   rules:
   - http:
       paths:
-        - path: /prometheus/
+        - path: /prometheus
           pathType: Prefix
           backend:
             service:
