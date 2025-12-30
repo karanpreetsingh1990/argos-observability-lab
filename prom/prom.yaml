@@ -31,9 +31,11 @@ spec:
           securityContext:
             runAsUser: 0
             privileged: true
+            runAsNonRoot: false
+            runAsGroup: 0 
       volumes:
         - name: config
           hostPath:
-            path: /apps/
+            path: /apps
 
 
