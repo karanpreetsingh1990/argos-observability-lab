@@ -4,6 +4,7 @@ metadata:
   name: test
   labels:
     app: test
+  namespace: prometheus
 spec:
   replicas: 1
   selector:

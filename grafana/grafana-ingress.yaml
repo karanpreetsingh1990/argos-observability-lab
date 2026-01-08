@@ -15,4 +15,4 @@ spec:
                 name: grafana-service
                 port:
                   number: 3000
-      host: "raspberrypi.local"
+                    #host: "raspberrypi.local"

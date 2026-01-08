@@ -34,7 +34,7 @@ spec:
       volumes:
         - name: config
           hostPath:
-            path: /apps/blackbox-exporter/
+            path: /datadrive/k8s/blackbox-exporter
 
 
 

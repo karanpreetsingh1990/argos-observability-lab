@@ -1,3 +1,4 @@
+
 kind: Namespace
 apiVersion: v1
 metadata:
@@ -20,22 +21,56 @@ spec:
       labels:
         app: prometheus
     spec:
+      initContainers:
+        - name: merge-configs
+          image: busybox:1.37
+          command: ["sh","-c","cp -R /cm1/* /config/; cp -R /cm2/* /config/"]
+          volumeMounts:
+            - name: scrape-configs
+              mountPath: /config
+            - name: blackbox-scrape
+              mountPath: /cm1
+              readOnly: true
+            - name: kube-monitoring
+              mountPath: /cm2
+              readOnly: true
       containers:
         - name: prom-raspi
           image: prom/prometheus
-          args: ["--config.file=/etc/prometheus/prometheus.yml","--storage.tsdb.path=/etc/prometheus/tsdb","--web.enable-lifecycle","--web.route-prefix=/prometheus","--web.external-url=http://raspberrypi.local:30000/prometheus"] 
+          args:
+            - "--config.file=/app/prometheus.yml"
+            - "--storage.tsdb.path=/etc/prometheus/tsdb"
+            - "--web.enable-lifecycle"
+              #- "--web.route-prefix=/prometheus"
+            - "--web.external-url=/prometheus"
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: config
               mountPath: /etc/prometheus/
+            - name: configfile
+              mountPath: /app
+              readOnly: true
+            - name: scrape-configs
+              mountPath: /app/scrapes
+
           securityContext:
             runAsUser: 0
             privileged: true
             runAsNonRoot: false
-            runAsGroup: 0 
+            runAsGroup: 0
       volumes:
         - name: config
           hostPath:
-            path: /apps
-
+            path: /datadrive/k8s/prometheus
+        - name: configfile
+          configMap:
+            name: prom-config
+        - name: blackbox-scrape
+          configMap:
+            name: blackbox-scrape
+        - name: kube-monitoring
+          configMap:
+            name: kubernetes-monitoring
+        - name: scrape-configs
+          emptyDir: {}
 

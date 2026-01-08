@@ -20,6 +20,6 @@ spec:
               name: prom-internal-service
               port:
                 number: 9090
-    host: "raspberrypi.local"
+                  #    host: "raspberrypi.local"
           
 

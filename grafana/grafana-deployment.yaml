@@ -29,10 +29,10 @@ spec:
               mountPath: /var/lib/grafana
           env:
           - name: GF_SERVER_ROOT_URL
-            value: "http://raspberrypi.local:30000/grafana"
+            value: "http://kpk8s.canadacentral.cloudapp.azure.com/grafana"
           - name: GF_SERVER_SERVE_FROM_SUB_PATH
             value: "true"
       volumes:
         - name: storage
           hostPath: 
-            path: /apps/grafana/data
+            path: /datadrive/k8s/grafana/data
