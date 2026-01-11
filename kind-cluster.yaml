@@ -21,7 +21,7 @@ nodes:
         hostPort: 30003
   - role: worker
     extraMounts:
-      - hostPath: /home/pi/kube-kind/worker
+      - hostPath: /mnt/Data/development/kubernetes/argus/argus-observability-lab/worker
         containerPath: /apps
     extraPortMappings:
       - containerPort: 31900
