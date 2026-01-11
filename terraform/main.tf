@@ -13,18 +13,18 @@ resource "helm_release" "haproxy" {
   namespace        = "haproxy-controller"
   set = [{
     name  = "controller.service.nodePorts.http"
-    value = "30000"
+    value = var.http_node_port
     },
     {
       name  = "controller.service.nodePorts.https"
-      value = "30001"
+      value = var.https_node_port
     },
     {
       name  = "controller.service.nodePorts.stat"
-      value = "30002"
+      value = var.stat_node_port
     },
     {
       name  = "controller.service.nodePorts.prometheus"
-      value = "30003"
+      value = var.prom_node_port
   }]
 }

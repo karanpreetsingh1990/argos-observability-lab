@@ -1,5 +1,19 @@
 # argus-observability-lab
 
+The project was born out of the need to have a k8s cluster that's as close to an actual cluster as possible that I can run on my Raspberrypi.
+
+Minikube is good for starting but it doesn't really come close to an actual cluster. I tried k3d but that came with it's own set of challenges.
+
+Kind started as good but did have some issues if I went past the two nodes that are currently configured. Even with the lower number of workers, it feels like an actual cluster and allows me to deploy the required components.
+
+Once I did have at least a few components working, I wanted to share the project so here it is!
+
+The following shows up a high level diagram of the cluster as it stands now. As of now the ELK stack is on the todo list(coming soon)
+
+![](./argus-arch.png)
+
+the following minimal config allows you to get a cluster running on a local laptop and get Prometheus and Grafana up and running with some data collection started within minutes.
+
 ## Pre Requisites
 
 We need the following to ensure the cluster can run and function as expected:
@@ -72,6 +86,11 @@ This deploys the pods, service and ingress.
 If the pods are started successfully and everything went well you can access the grafana interface at:
 
 > http://< local or remote host >:30000/grafana
+
+If you want to connect Prometheus to Grafana to start visualizing your data you'll have to add the Prometheus data source with the following URL.
+
+> http://prom-internal-service.prometheus:9090/prometheus
+
 
 ## ToDo
 
