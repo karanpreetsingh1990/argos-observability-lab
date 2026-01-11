@@ -28,3 +28,11 @@ resource "helm_release" "haproxy" {
       value = var.prom_node_port
   }]
 }
+
+
+resource "helm_release" "metrics-server" {
+  repository = "https://kubernetes-sigs.github.io/metrics-server/"
+  name       = "metrics-server"
+  chart      = "metrics-server"
+
+}

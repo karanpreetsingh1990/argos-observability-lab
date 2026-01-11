@@ -1,4 +1,4 @@
-# argus-observability-lab
+# argos-observability-lab
 
 The project was born out of the need to have a k8s cluster that's as close to an actual cluster as possible that I can run on my Raspberrypi.
 
@@ -10,7 +10,7 @@ Once I did have at least a few components working, I wanted to share the project
 
 The following shows up a high level diagram of the cluster as it stands now. As of now the ELK stack is on the todo list(coming soon)
 
-![](./argus-arch-dark.png)
+![](./argos-arch-dark.png)
 
 the following minimal config allows you to get a cluster running on a local laptop and get Prometheus and Grafana up and running with some data collection started within minutes.
 
