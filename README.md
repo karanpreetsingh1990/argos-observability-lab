@@ -54,6 +54,10 @@ Deploy using the following command:
 ```bash
 kubectl apply -f prom/
 ```
+If the pods are started successfully and everything went well you can access the prometheus interface at:
+
+> http://< local or remote host >:30000/prometheus
+
 
 ## Deploy Grafana
 
@@ -65,9 +69,9 @@ kubectl apply -f grafana/
 
 This deploys the pods, service and ingress.
 
-If the pods are started successfully and everything went well you can access the prometheus interface at:
+If the pods are started successfully and everything went well you can access the grafana interface at:
 
-> http://< local or remote host >:30000/prometheus
+> http://< local or remote host >:30000/grafana
 
 ## ToDo
 
