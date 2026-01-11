@@ -69,4 +69,16 @@ If the pods are started successfully and everything went well you can access the
 
 > http://< local or remote host >:30000/prometheus
 
+## ToDo
+
+The next steps for the project are:
+
+- [] Add ELK stack option
+- [] Add New Relic observability option
+- [] Add DataDog observability option
+- [] Add Sample App workload
+- [] Add API Server workload
+- [] Add Opentelemetry instrumentation and collector for sample App and API server
+- [] Add LGTM stack option
+- [] More
 
