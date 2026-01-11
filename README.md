@@ -96,12 +96,12 @@ If you want to connect Prometheus to Grafana to start visualizing your data you'
 
 The next steps for the project are:
 
-- [] Add ELK stack option
-- [] Add New Relic observability option
-- [] Add DataDog observability option
-- [] Add Sample App workload
-- [] Add API Server workload
-- [] Add Opentelemetry instrumentation and collector for sample App and API server
-- [] Add LGTM stack option
-- [] More
+- [ ] Add ELK stack option
+- [ ] Add New Relic observability option
+- [ ] Add DataDog observability option
+- [ ] Add Sample App workload
+- [ ] Add API Server workload
+- [ ] Add Opentelemetry instrumentation and collector for sample App and API server
+- [ ] Add LGTM stack option
+- [ ] More
 
