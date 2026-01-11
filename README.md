@@ -58,6 +58,16 @@ terraform plan # optional to view output and validate changes
 terraform apply
 ```
 
+## Install Metrics Server
+
+### Install using kubectl
+
+The metrics server provides the neccessary telemetry to work with HPA and may be installed using:
+
+```bash
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
 
 ## Deploy Promethes
 
