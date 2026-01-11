@@ -14,21 +14,15 @@ spec:
     metadata:
       labels:
         app: test
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9091"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: test-raspi
           image: alpine
           command: ["sleep","infinity"]
           imagePullPolicy: IfNotPresent
-          volumeMounts:
-            - name: config
-              mountPath: /etc/prometheus/
-          securityContext:
-            runAsUser: 0
-            privileged: true
-      volumes:
-        - name: config
-          hostPath:
-            path: /apps/
 
 

@@ -1,7 +1,0 @@
-   - job_name: 'blackbox_exporter'
-     metrics_path: /probe
-     params:
-       module: [http_2xx]
-     static_configs:
-       - targets:
-         - http://example.com

@@ -20,17 +20,20 @@ spec:
     metadata:
       labels:
         app: prometheus
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port:   '9090'
+        prometheus.io/path: '/metrics'
     spec:
       initContainers:
         - name: merge-configs
           image: busybox:1.37
-          command: ["sh","-c","cp -R /cm1/* /config/; cp -R /cm2/* /config/"]
+          command: ["sh","-c","cp -LR /cm1/* /config/; cp -LR /cm2/* /config/"]
           volumeMounts:
             - name: scrape-configs
               mountPath: /config
             - name: blackbox-scrape
               mountPath: /cm1
-              readOnly: true
             - name: kube-monitoring
               mountPath: /cm2
               readOnly: true
@@ -44,6 +47,7 @@ spec:
               #- "--web.route-prefix=/prometheus"
             - "--web.external-url=/prometheus"
           imagePullPolicy: IfNotPresent
+            #          command: ["sleep","infinity"]
           volumeMounts:
             - name: config
               mountPath: /etc/prometheus/
@@ -51,8 +55,7 @@ spec:
               mountPath: /app
               readOnly: true
             - name: scrape-configs
-              mountPath: /app/scrapes
-
+              mountPath: /config
           securityContext:
             runAsUser: 0
             privileged: true
@@ -61,7 +64,7 @@ spec:
       volumes:
         - name: config
           hostPath:
-            path: /datadrive/k8s/prometheus
+            path: /apps
         - name: configfile
           configMap:
             name: prom-config

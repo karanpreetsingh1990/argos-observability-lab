@@ -35,4 +35,4 @@ spec:
       volumes:
         - name: storage
           hostPath: 
-            path: /datadrive/k8s/grafana/data
+            path: /apps/grafana/data
