@@ -10,7 +10,7 @@ Once I did have at least a few components working, I wanted to share the project
 
 The following shows up a high level diagram of the cluster as it stands now. As of now the ELK stack is on the todo list(coming soon)
 
-![](./argus-arch.png)
+![](./argus-arch-dark.png)
 
 the following minimal config allows you to get a cluster running on a local laptop and get Prometheus and Grafana up and running with some data collection started within minutes.
 
