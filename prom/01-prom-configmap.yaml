@@ -20,7 +20,7 @@ data:
         static_configs:
           - targets: ['localhost:9090']
     scrape_config_files:
-      - 'scrapes/*.yml'
+      - '/config/*.yml'
 kind: ConfigMap
 metadata:
   creationTimestamp: null

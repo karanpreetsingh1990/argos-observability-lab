@@ -33,8 +33,10 @@ spec:
               mountPath: /config/
       volumes:
         - name: config
-          hostPath:
-            path: /apps/blackbox-exporter
+          configMap:
+            name: blackbox-config
+            #hostPath:
+            #path: /apps/blackbox-exporter
 
 
 
