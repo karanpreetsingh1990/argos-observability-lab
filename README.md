@@ -30,11 +30,11 @@ The config file provides most of the neccessary config but requires one change.
 The mount path on your machine may be different and needs to be updated as required.
 
 Update the following lines to change the path to the directory where you cloned the repository.
-
->  - role: worker
->    extraMounts:
->      - hostPath: < repository path >
-
+```
+  - role: worker
+    extraMounts:
+      - hostPath: < repository path >
+```
 
 ```bash
 kind create cluster --config ./kind-cluster.yaml
