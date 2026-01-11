@@ -21,7 +21,7 @@ We need the following to ensure the cluster can run and function as expected:
 - [kind](https://kind.sigs.k8s.io)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/) - Not required but makes it a lot easier to work with the cluster.
 - [helm](https://helm.sh/docs/intro/install/) - Optional if you want to install using helm directly
-- [terraform] - Optional if you want to use terraform to install haproxy
+- [terraform](https://developer.hashicorp.com/terraform) - Optional if you want to use terraform to install haproxy
 
 ## Start kind Cluster
 
