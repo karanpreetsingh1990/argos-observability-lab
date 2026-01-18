@@ -1,5 +1,6 @@
 worker/tsdb/
 worker/grafana/data/
-terraform/*.tfstate
+terraform/terraform.tfstate
+terraform/*.tfstate.*
 terraform/.terraform/
 terraform/.terraform.lock*
