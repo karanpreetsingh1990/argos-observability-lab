@@ -5,7 +5,13 @@ provider "helm" {
 
 }
 
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+
+}
+
 resource "helm_release" "haproxy" {
+  count            = var.install_haproxy == true ? 1 : 0
   repository       = "https://haproxytech.github.io/helm-charts"
   name             = "haproxytech"
   chart            = "kubernetes-ingress"
@@ -31,8 +37,33 @@ resource "helm_release" "haproxy" {
 
 
 resource "helm_release" "metrics-server" {
+  count      = var.install_metrics_server == true ? 1 : 0
   repository = "https://kubernetes-sigs.github.io/metrics-server/"
   name       = "metrics-server"
   chart      = "metrics-server"
+  #namespace  = "kube-system"
+  set = [{
+    name  = "args"
+    value = "{--kubelet-insecure-tls=true}"
+  }]
+}
 
+
+## New Relic module
+
+module "newrelic" {
+  count            = var.install_newrelic_k8s == true ? 1 : 0
+  source           = "./modules/newrelic"
+  newrelic_options = var.newrelic_options
+  newrelic_key     = var.newrelic_key
+}
+
+
+## Datadog related config
+
+
+module "datadog" {
+  count       = var.install_datadog_k8s == true ? 1 : 0
+  source      = "./modules/datadog"
+  datadog_key = var.datadog_key
 }
