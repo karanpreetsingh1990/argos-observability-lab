@@ -57,11 +57,11 @@ helm install haproxy-kubernetes-ingress haproxytech/kubernetes-ingress \
   --set controller.service.nodePorts.prometheus=30003
 ```
 
-### Install Terraform to install HA Proxy Ingress controller
+### Install HA Proxy Ingress controller using Terraform
 
 The code for the installation is in the terraform directory
 
-Install using the following commands after changind to the terraform directory.
+Install using the following commands after changing to the terraform directory.
 
 ```bash
 terraform init
@@ -114,12 +114,169 @@ If you want to connect Prometheus to Grafana to start visualizing your data you'
 
 ## New Relic Observability Setup
 
-Coming Soon!
+### Install New Relic agents and required configs using Helm
+
+We may use helm to install the New Relic bundle and associated requirements.
+
+The following commands also provide the required configuratin parameters for us to toggle, update.
+
+```bash
+KSM_IMAGE_VERSION="v2.13.0"
+helm repo add newrelic https://helm-charts.newrelic.com 
+helm repo update 
+kubectl create namespace newrelic ; 
+helm upgrade --install newrelic-bundle newrelic/nri-bundle \
+--set global.licenseKey=<> \
+--set global.cluster=argos \
+--namespace=newrelic \
+--set global.lowDataMode=true \
+--set kube-state-metrics.image.tag=${KSM_IMAGE_VERSION} \
+--set kube-state-metrics.enabled=true \
+--set kubeEvents.enabled=true \
+--set newrelic-prometheus-agent.enabled=true \
+--set newrelic-prometheus-agent.lowDataMode=true \
+--set newrelic-prometheus-agent.config.kubernetes.integrations_filter.enabled=false \
+--set k8s-agents-operator.enabled=true \
+--set logging.enabled=true \
+--set newrelic-logging.lowDataMode=true \
+```
+
+### Install New Relic agents using Terraform
+
+I've created a module for New Relic that allows us to pass the values to it to add the required agents and configurations.
+
+The terraform values are assigned in the *terraform.tfvars* file. Although this file isn't usually committed to the repository, I wanted to provide this as a sample.
+
+The module has been written in such a way that you can toggle the installation of New Relic with a single parameter.
+
+Use the following variable to toggle this module.
+
+> install_newrelic_k8s   = false
+
+The New Relic Key is something you'll have to get for your environment or create to allow reporting data to the correct account.
+
+> newrelic_key           = "<new relic license key>"
+
+The following uses a map to define the other settings that are then used within the module to create the configuration.
+
+```
+newrelic_options = {
+  "global.lowDataMode"                                                      = "true"
+  "kubeEvents.enabled"                                                      = "true"
+  "logging.enabled"                                                         = "true"
+  "newrelic-logging.lowDataMode"                                            = "true"
+  "k8s-agents-operator.enabled"                                             = "true"
+  "global.cluster"                                                          = "argus"
+  "newrelic-prometheus-agent.enabled"                                       = "true"
+  "newrelic-prometheus-agent.lowDataMode"                                   = "true"
+  "newrelic-prometheus-agent.config.kubernetes.integrations_filter.enabled" = "false"
+}
+```
+
+Install using the following commands after changing to the terraform directory and updating the variables.
+
+```bash
+terraform init
+terraform plan # optional to view output and validate changes
+terraform apply
+```
 
 ## DataDog Observability Setup
 
-Coming Soon!
+### Install DataDog Operator using Helm
 
+We may use helm to install the New Relic bundle and associated requirements. There are additional steps in this case since the manifest needs to be applied to the cluster separately.
+
+The following installs the DataDog operator into the cluster and creates the secret for the api-key.
+```bash
+helm repo add datadog https://helm.datadoghq.com
+helm install datadog-operator datadog/datadog-operator
+kubectl create secret generic datadog-secret --from-literal api-key=< api key >
+```
+
+Once the operator is installed, you must apply the manifest with the configuration.
+
+The following yaml file provides the basic config. Create the file *datadog-agent.yml* with the following contents.
+
+```yaml
+kind: "DatadogAgent"
+apiVersion: "datadoghq.com/v2alpha1"
+metadata:
+  name: "datadog"
+spec:
+  global:
+    clusterName: "argos"
+    site: "us5.datadoghq.com"
+    credentials:
+      apiSecret:
+        secretName: "datadog-secret"
+        keyName: "api-key"
+  features:
+    clusterChecks:
+      enabled: true
+    orchestratorExplorer:
+      enabled: true
+    logCollection:
+      enabled: true
+      containerCollectAll: true
+    otelCollector:
+      enabled: true
+      ports:
+        - containerPort: 4317
+          hostPort: 4317
+          name: "otel-grpc"
+        - containerPort: 4318
+          hostPort: 4318
+          name: "otel-http"
+  override:
+    nodeAgent:
+      env:
+        - name: "DD_HOSTNAME_TRUST_UTS_NAMESPACE"
+          value: "true"
+    clusterAgent:
+      containers:
+        cluster-agent:
+          env:
+            - name: "DD_HOSTNAME_TRUST_UTS_NAMESPACE"
+              value: "true"
+
+```
+
+> NOTE: The environment variables for NodeAgent and ClusterAgent had to be added to ensure that the containers are able to resolve the hostnames. Without them the agent was stuck in a CrashLoop
+
+Apply the configuration using:
+
+```bash
+kubectl apply -f datadog-agent.yaml
+```
+
+### Install DataDog Operator using Terraform
+
+I've created a module for DataDog that allows us to pass the values to it to add the required agents and configurations.
+
+The terraform values are assigned in the *terraform.tfvars* file. Although this file isn't usually committed to the repository, I wanted to provide this as a sample.
+
+The module has been written in such a way that you can toggle the installation of DataDog with a single parameter.
+
+Use the following variable to toggle this module.
+
+> install_datadog_k8s    = false
+
+The DataDog Key is something you'll have to get for your environment or create to allow reporting data to the correct account.
+
+> datadog_key = "<datadog api key>"
+
+Install using the following commands after changing to the terraform directory and updating the variables.
+
+```bash
+terraform init
+terraform plan # optional to view output and validate changes
+terraform apply
+```
+
+The module also contains some provisioners that allow adding the datadog-agent.yml to the cluster post installation of the required operator.
+
+I've noticed some issues with the removal of datadog operators from the cluster. The module will be updated further if the issues persist.
 
 ## ToDo
 
@@ -133,4 +290,3 @@ The next steps for the project are:
 - [ ] Add Opentelemetry instrumentation and collector for sample App and API server
 - [ ] Add LGTM stack option
 - [ ] More
-
