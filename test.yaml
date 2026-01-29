@@ -4,7 +4,7 @@ metadata:
   name: test
   labels:
     app: test
-  namespace: prometheus
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -22,7 +22,31 @@ spec:
       containers:
         - name: test-raspi
           image: alpine
-          command: ["sleep","infinity"]
+          volumeMounts:
+            - name: logging
+              mountPath: /app/log
+          command:
+            [
+              "sh",
+              "-c",
+              'while true; do echo "Writting to log. Timestamp: `date`" >> /app/log/app.log; sleep 5; done;',
+            ]
           imagePullPolicy: IfNotPresent
+        - name: fluentd
+          image: fluentd
+          volumeMounts:
+            - name: logging
+              mountPath: /app/log
+          env:
+            - name: FLUENT_CONF
+              value: |
+                <source>
+                  @type tail
+                  path /app/log/app.log
+                  pos_file /app/log/app.log.pos
+                  tag app.log
+                </source>
 
-
+      volumes:
+        - name: logging
+          emptyDir: {}

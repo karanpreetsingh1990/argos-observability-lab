@@ -15,4 +15,5 @@ newrelic_options = {
   "newrelic-prometheus-agent.lowDataMode"                                   = "true"
   "newrelic-prometheus-agent.config.kubernetes.integrations_filter.enabled" = "false"
 }
-datadog_key = "<datadog api key>"
+datadog_key        = "<datadog api key>"
+install_calico_k8s = false

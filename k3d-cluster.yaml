@@ -1,11 +1,12 @@
 apiVersion: k3d.io/v1alpha5
-kind: Simple 
+kind: Simple
 metadata:
   name: argus
-servers: 1 
-agents: 1 
+servers: 1
+agents: 1
+subnet: "175.28.0.0/16"
 volumes:
-  - volume: /home/pi/kube-kind/worker:/app 
+  - volume: /mnt/Data/development/kubernetes/argus/argus-observability-lab/worker:/app
     nodeFilters:
       - server:0
       - agent:*
@@ -22,4 +23,3 @@ options:
         nodeFilters:
           - server:*
           - agent:*
-       
