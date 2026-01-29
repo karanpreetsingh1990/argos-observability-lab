@@ -33,6 +33,7 @@ resource "helm_release" "haproxy" {
       name  = "controller.service.nodePorts.prometheus"
       value = var.prom_node_port
   }]
+  depends_on = [module.calico]
 }
 
 
@@ -66,4 +67,10 @@ module "datadog" {
   count       = var.install_datadog_k8s == true ? 1 : 0
   source      = "./modules/datadog"
   datadog_key = var.datadog_key
+}
+
+module "calico" {
+  count  = var.install_calico_k8s == true ? 1 : 0
+  source = "./modules/calico"
+
 }

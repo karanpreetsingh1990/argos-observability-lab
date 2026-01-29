@@ -53,3 +53,8 @@ variable "datadog_key" {
   type      = string
   sensitive = true
 }
+
+variable "install_calico_k8s" {
+  type = bool
+
+}
